@@ -1,5 +1,13 @@
 #!/usr/bin/env bash
 
+# Usage: `script` [version]
+#
+# A script for deploying a new version branch with the contents of the
+# current directory.
+#
+# version: Optional argument for the chosen version, if it's not available
+# the latest version information will be pulled from the Dockerfile
+
 # The the Git commit information for the continous integration agent.
 git config --global user.email "circleci@circleci"
 git config --global user.name "Circle CI Automated Builder"
@@ -8,7 +16,7 @@ git config --global user.name "Circle CI Automated Builder"
 # feed information to get a JSON-P formatted response, strip the output to
 # retrieve the actual content and then get the version number from the first
 # entry.
-VERSION=$(sed -n "s/ENV CONF_VERSION[[:space:]]*\([[:digit:]].*\)/\1/p" Dockerfile)
+VERSION="${1:-$(sed -n "s/ENV CONF_VERSION[[:space:]]*\([[:digit:]].*\)/\1/p" Dockerfile)}"
 
 git fetch --all
 git show-branch "origin/${VERSION}"
