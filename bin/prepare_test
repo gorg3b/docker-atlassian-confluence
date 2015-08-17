@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+
+# Usage: `script` [version]
+#
+# A script for preparing the branch for a new version build.
+#
+# version: Optional argument for the chosen version, if it's not available
+# the latest version information will be pulled from Atlassian's version feed
+
+echo "Obtaining latest Atlassian Confluence version number"
+
+# Obtain the latest Atlassian Confluence version by going to the JSON version feed
+# information to get a JSONP formatted response, strip the output to retrieve
+# the actual content and then get the version number from the first entry.
+VERSION="${1:-$(curl -Ls 'https://my.atlassian.com/download/feeds/current/confluence.json' | sed 's/downloads(\(.*\))/\1/g' | jq -r '.[0].version')}"
+
+echo "Found the newest version to be: $VERSION"
+
+echo "Preparing branch for version new Atlassian Confluence version"
+
+# Edit the `Dockerfile` by changing the string `@@VERSION@@` to the obtained
+# version from the Atlassian Confluence version feed.
+sed --in-place "s/@@VERSION@@/$VERSION/g" Dockerfile
+sed --in-place "s/@@VERSION@@/$VERSION/g" README.md
+
+echo "Ready for acceptance testing"
