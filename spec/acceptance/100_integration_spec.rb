@@ -16,14 +16,13 @@ describe 'Atlassian Confluence with PostgreSQL 9.3 Database', order: :defined do
 				# Create Confluence database
 				@container_db.exec ["psql", "--username", "postgres", "--command", "create database confluencedb owner postgres encoding 'utf8';"]
 			end
+			after :all do
+				@container_db.remove force: true, v: true unless @container_db.nil?
+			end
 		else
 			before :all do
 				@container_db = Docker::Container.get 'postgres'
 			end
-		end
-
-		after :all do
-			@container_db.remove force: true, v: true unless @container_db.nil?
 		end
 	end
 end
@@ -41,12 +40,11 @@ describe 'Atlassian Confluence with MySQL 5.6 Database', order: :defined do
 				# Create Confluence database
 				@container_db.exec ['mysql', '--user=root', '--password=mysecretpassword', '--execute', 'CREATE DATABASE confluencedb CHARACTER SET utf8 COLLATE utf8_bin;']
 			end
+			after :all do
+				@container_db.remove force: true, v: true unless @container_db.nil?
+			end
 		else
 			@container_db = Docker::Container.get 'mysql'
-		end
-
-		after :all do
-			@container_db.remove force: true, v: true unless @container_db.nil?
 		end
 	end
 end
