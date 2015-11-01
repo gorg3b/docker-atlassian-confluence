@@ -1,5 +1,10 @@
 #!/usr/bin/env bash
 
+if [ "$(git rev-parse --abbrev-ref HEAD)" != "master" ]; then
+	echo "Not on master branch... Skipping."
+	exit 0
+fi
+
 # Usage: bin/prepare [VERSION]
 #
 # Prepares the current directory according to the given Atlassian Confluence
