@@ -10,6 +10,6 @@ shared_examples 'a buildable docker image' do |path, options = {}|
   end
 
   after :all do
-    @container.remove force: true, v: true unless @container.nil? || ENV["CI"] == "true"
+    @container.remove force: true, v: true unless @container.nil?
   end
 end
