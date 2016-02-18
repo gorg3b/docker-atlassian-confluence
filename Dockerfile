@@ -39,7 +39,7 @@ RUN set -x \
         --delete               "Server/Service/Engine/@debug" \
         --delete               "Server/Service/Engine/Host/@debug" \
         --delete               "Server/Service/Engine/Host/Context/@debug" \
-                               "${CONF_INSTALL}/conf/server.xml" \
+                                "${CONF_INSTALL}/conf/server.xml" \
     && sed --in-place           "s/port=\"8090\"/port=\""${CONF_PORT}"\" scheme=\""${CONF_SCHEME}"\" proxyName=\""${CONF_URL}"\" proxyPort=\""${CONF_PROXYP}"\" secure=\""${CONF_SECURE}"\"/" "${CONF_INSTALL}/conf/server.xml"
 
 
